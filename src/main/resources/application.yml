@@ -1,0 +1,23 @@
+server:
+  port: 8081
+spring:
+  main:
+    banner-mode: off
+  data:
+    mongodb:
+      uri: mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@m220-mflix.xfd1g.mongodb.net/${MONGO_DB_NAME}?retryWrites=true&w=majority
+      #uri: mongodb+srv://logistics-poc:JSoBCdvfKocKLd7c@m220-mflix.xfd1g.mongodb.net/logistics?retryWrites=true&w=majority
+      uuid-representation: STANDARD
+kafka:
+  bootstrap:
+    servers: pkc-2396y.us-east-1.aws.confluent.cloud:9092
+  consumer:
+    mercadoria:
+      topic: mercadoria.topic
+  properties:
+    security-protocol: SASL_SSL
+    sasl-mechanism: PLAIN
+    client-dns-lookup: use_all_dns_ips
+    sasl-jaas-config: org.apache.kafka.common.security.plain.PlainLoginModule   required username='${KAFKA_SASL_USERNAME}'   password='${KAFKA_SASL_PASSWORD}';
+    #sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule   required username='ZL7WC52BVF3EUS7J'   password='3m3Y/AwnN1vsJpiAyupm6r6TP6RCWIIqZAtTDtW2rR0fnPHzns667OrliJ1MS7JP';
+    session-timeout-ms: 45000
