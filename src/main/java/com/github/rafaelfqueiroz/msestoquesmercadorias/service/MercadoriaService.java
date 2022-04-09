@@ -4,16 +4,11 @@ import com.github.rafaelfqueiroz.msestoquesmercadorias.repository.MercadoriaRepo
 import com.github.rafaelfqueiroz.msestoquesmercadorias.repository.documents.MercadoriaDocument;
 import com.github.rafaelfqueiroz.msestoquesmercadorias.repository.documents.MovimentacaoDocument;
 import com.github.rafaelfqueiroz.msestoquesmercadorias.service.model.Mercadoria;
-import com.github.rafaelfqueiroz.msestoquesmercadorias.service.model.Movimentacao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toUnmodifiableList;
 
 @Service
@@ -21,6 +16,7 @@ import static java.util.stream.Collectors.toUnmodifiableList;
 public final class MercadoriaService {
 
     private final MercadoriaRepository mercadoriaRepository;
+    private final MercadoriaMetrics mercadoriaMetrics;
 
     public void handleMercadoria(Mercadoria mercadoria) {
         Optional<MercadoriaDocument> mercadoriaStored = mercadoriaRepository.findById(mercadoria.getId());
@@ -61,6 +57,8 @@ public final class MercadoriaService {
                     .build();
         }
         mercadoriaRepository.save(mercadoriaDocument);
+        mercadoriaMetrics.measure(mercadoria);
     }
+
 
 }

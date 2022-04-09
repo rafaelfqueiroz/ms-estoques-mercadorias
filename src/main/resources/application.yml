@@ -1,5 +1,6 @@
 server:
   port: 8081
+
 spring:
   main:
     banner-mode: off
@@ -7,6 +8,7 @@ spring:
     mongodb:
       uri: mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@m220-mflix.xfd1g.mongodb.net/${MONGO_DB_NAME}?retryWrites=true&w=majority
       uuid-representation: STANDARD
+
 kafka:
   bootstrap:
     servers: pkc-2396y.us-east-1.aws.confluent.cloud:9092
@@ -20,3 +22,8 @@ kafka:
     sasl-jaas-config: org.apache.kafka.common.security.plain.PlainLoginModule   required username='${KAFKA_SASL_USERNAME}'   password='${KAFKA_SASL_PASSWORD}';
     session-timeout-ms: 45000
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
