@@ -23,6 +23,27 @@ kafka:
     session-timeout-ms: 45000
 
 management:
+  metrics:
+    use-global-registry: false
+    enable:
+      jvm:
+        gc: false
+        buffer: false
+        classes: false
+        threads: false
+        memory: false
+      logback: false
+      mongodb: false
+      disk: false
+      process: false
+      executor: false
+      system:
+        cpu: false
+        load: false
+      application: false
+      spring:
+        kafka: false
+      http: false
   endpoints:
     web:
       exposure:

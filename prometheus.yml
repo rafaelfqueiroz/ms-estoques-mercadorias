@@ -1,0 +1,15 @@
+global:
+  scrape_interval: 30s # How frequently to scrape targets by default
+
+remote_write:
+  - url: https://prometheus-prod-10-prod-us-central-0.grafana.net/api/prom/push
+    basic_auth:
+      username: 389742
+      password: eyJrIjoiMTQyMTkyYjNkODRiNTRmYjdlOTExOGEyMmM1NWVkZWQ4YWNmZGU3MCIsIm4iOiJsb2dpc3RpY3MtcG9jIiwiaWQiOjYyOTA0Nn0=
+
+scrape_configs:
+  - job_name: 'ms-estoques-mercadorias'         # The job name is assigned to scraped metrics by default.
+    metrics_path: '/actuator/prometheus'  # The HTTP resource path on which to fetch metrics from targets.
+    scrape_interval: 5s                   # How frequently to scrape targets from this job.
+    static_configs:                       # A static_config allows specifying a list of targets and a common label set for them
+      - targets: ['192.168.1.12:8081']
