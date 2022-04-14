@@ -15,12 +15,19 @@ kafka:
   consumer:
     mercadoria:
       topic: mercadoria.topic
+  producer:
+    comando:
+      topic: comando.topic
   properties:
     security-protocol: SASL_SSL
     sasl-mechanism: PLAIN
     client-dns-lookup: use_all_dns_ips
     sasl-jaas-config: org.apache.kafka.common.security.plain.PlainLoginModule   required username='${KAFKA_SASL_USERNAME}'   password='${KAFKA_SASL_PASSWORD}';
     session-timeout-ms: 45000
+
+workflow:
+  chave: workflow-nps
+
 
 management:
   metrics:

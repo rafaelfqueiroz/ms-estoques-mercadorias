@@ -17,10 +17,17 @@ public final class MercadoriaService {
 
     private final MercadoriaRepository mercadoriaRepository;
     private final MercadoriaMetrics mercadoriaMetrics;
+    private final MercadoriaEntregueService mercadoriaEntregueService;
 
     public void handleMercadoria(Mercadoria mercadoria) {
+
+        if (mercadoria.isEntregue()) {
+            return;
+        }
+
         Optional<MercadoriaDocument> mercadoriaStored = mercadoriaRepository.findById(mercadoria.getId());
         MercadoriaDocument mercadoriaDocument;
+
         if (mercadoriaStored.isPresent()) {
             mercadoriaDocument = mercadoriaStored.get();
             final var collectedDeltas = mercadoria.getMovimentacoes()
@@ -57,6 +64,11 @@ public final class MercadoriaService {
                     .build();
         }
         mercadoriaRepository.save(mercadoriaDocument);
+
+        if (mercadoria.isEntregue()) {
+            mercadoriaEntregueService.notificarMercadoriaEntregue(mercadoria);
+        }
+
         mercadoriaMetrics.measure(mercadoria);
     }
 
