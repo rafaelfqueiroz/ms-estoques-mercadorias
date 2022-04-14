@@ -4,6 +4,7 @@ import com.github.rafaelfqueiroz.msestoquesmercadorias.kafka.events.MercadoriaEv
 import com.github.rafaelfqueiroz.msestoquesmercadorias.service.MercadoriaService;
 import com.github.rafaelfqueiroz.msestoquesmercadorias.service.model.Mercadoria;
 import com.github.rafaelfqueiroz.msestoquesmercadorias.service.model.Movimentacao;
+import com.github.rafaelfqueiroz.msestoquesmercadorias.service.model.SituacaoMercadoria;
 import com.github.rafaelfqueiroz.msestoquesmercadorias.service.model.TipoMovimentacao;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -35,6 +36,8 @@ public final class MercadoriaEventListener {
                 .descricao(mercadoriaEvent.getDescricao())
                 .peso(mercadoriaEvent.getPeso())
                 .medida(mercadoriaEvent.getMedida())
+                .situacao(SituacaoMercadoria.valueOf(mercadoriaEvent.getSituacao().name()))
+                .idCliente(mercadoriaEvent.getIdCliente())
                 .movimentacoes(
                         mercadoriaEvent
                                 .getMovimentacoes()

@@ -14,5 +14,12 @@ public class Mercadoria {
     private final String peso;
     private final String descricao;
     private final String codigo;
+    private final UUID idCliente;
+    private final SituacaoMercadoria situacao;
     private final List<Movimentacao> movimentacoes;
+
+    public boolean isEntregue() {
+        return SituacaoMercadoria.ENTREGUE.equals(situacao);
+    }
+
 }

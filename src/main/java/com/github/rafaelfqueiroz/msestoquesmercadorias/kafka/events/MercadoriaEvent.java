@@ -18,6 +18,8 @@ public final class MercadoriaEvent {
     private String medida;
     private String peso;
     private String descricao;
+    private UUID idCliente;
+    private SituacaoMercadoria situacao;
     private List<Movimentacao> movimentacoes;
 
     @Builder
@@ -30,10 +32,15 @@ public final class MercadoriaEvent {
         private UUID idDeposito;
     }
 
-    public enum TipoMovimentacao {
+    public enum SituacaoMercadoria {
+        RECEBIDA,
+        MOVIMENTACAO,
+        EXPEDICAO,
+        ENTREGUE
+    }
 
+    public enum TipoMovimentacao {
         CHECKIN,
         CHECKOUT
-
     }
 }
