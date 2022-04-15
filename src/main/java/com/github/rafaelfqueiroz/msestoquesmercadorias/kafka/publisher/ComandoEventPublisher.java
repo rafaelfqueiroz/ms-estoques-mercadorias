@@ -22,8 +22,8 @@ public final class ComandoEventPublisher implements MercadoriaEntregueService {
     private final String topicComando;
     private final KafkaTemplate<String, ComandoEvent> kafkaTemplate;
 
-    public ComandoEventPublisher(@Value("${workflow.chave") String chaveWorkflow,
-                                 @Value("${kafka.producer.comando.topic") String topicComando,
+    public ComandoEventPublisher(@Value("${workflow.chave}") String chaveWorkflow,
+                                 @Value("${kafka.producer.comando.topic}") String topicComando,
                                  KafkaTemplate<String, ComandoEvent> kafkaTemplate) {
         this.chaveWorkflow = chaveWorkflow;
         this.topicComando = topicComando;

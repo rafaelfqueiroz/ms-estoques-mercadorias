@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,6 +31,7 @@ public final class MercadoriaEvent {
         private UUID id;
         private TipoMovimentacao tipoMovimentacao;
         private UUID idDeposito;
+        private Instant dataRegistro;
     }
 
     public enum SituacaoMercadoria {

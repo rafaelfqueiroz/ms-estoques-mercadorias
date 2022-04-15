@@ -29,7 +29,7 @@ public class ComandoPublisherConfig {
     }
 
     @Bean
-    public ProducerFactory<String, ComandoEvent> producerFactory(KafkaProperties defaultProperties) {
+    public ProducerFactory<String, ComandoEvent> comandoEventProducerFactory(KafkaProperties defaultProperties) {
         return new DefaultKafkaProducerFactory<>(kafkaProducerProperties(defaultProperties));
     }
 

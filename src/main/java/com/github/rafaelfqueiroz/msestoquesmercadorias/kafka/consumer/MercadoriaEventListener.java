@@ -46,6 +46,7 @@ public final class MercadoriaEventListener {
                                         .id(mov.getId())
                                         .idDeposito(mov.getIdDeposito())
                                         .tipoMovimentacao(TipoMovimentacao.valueOf(mov.getTipoMovimentacao().name()))
+                                        .dataCriacao(mov.getDataRegistro())
                                         .build())
                                 .collect(toList())
                 ).build();

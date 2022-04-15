@@ -4,6 +4,7 @@ import com.github.rafaelfqueiroz.msestoquesmercadorias.repository.MercadoriaRepo
 import com.github.rafaelfqueiroz.msestoquesmercadorias.repository.documents.MercadoriaDocument;
 import com.github.rafaelfqueiroz.msestoquesmercadorias.repository.documents.MovimentacaoDocument;
 import com.github.rafaelfqueiroz.msestoquesmercadorias.service.model.Mercadoria;
+import com.github.rafaelfqueiroz.msestoquesmercadorias.service.model.SituacaoMercadoria;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,27 +22,33 @@ public final class MercadoriaService {
 
     public void handleMercadoria(Mercadoria mercadoria) {
 
-        if (mercadoria.isEntregue()) {
-            return;
-        }
-
         Optional<MercadoriaDocument> mercadoriaStored = mercadoriaRepository.findById(mercadoria.getId());
         MercadoriaDocument mercadoriaDocument;
 
         if (mercadoriaStored.isPresent()) {
             mercadoriaDocument = mercadoriaStored.get();
-            final var collectedDeltas = mercadoria.getMovimentacoes()
-                    .stream()
-                    .filter(movimentacao -> !mercadoriaDocument.getMovimentacoes().contains(movimentacao))
-                    .map(movimentacao ->
-                            MovimentacaoDocument.builder()
-                                    .id(movimentacao.getId())
-                                    .tipoMovimentacao(movimentacao.getTipoMovimentacao())
-                                    .idDeposito(movimentacao.getIdDeposito())
-                                    .dataCriacao(movimentacao.getDataCriacao())
-                                    .build()
-                    ).collect(toUnmodifiableList());
-            mercadoriaDocument.getMovimentacoes().addAll(collectedDeltas);
+            if (mercadoriaDocument.getSituacao().equals(SituacaoMercadoria.ENTREGUE)) {
+                return;
+            }
+            if (mercadoria.getMovimentacoes().size() != mercadoriaDocument.getMovimentacoes().size()) {
+                final var collectedDeltas = mercadoria.getMovimentacoes()
+                        .stream()
+                        .filter(
+                                mov -> mercadoriaDocument.getMovimentacoes()
+                                        .stream()
+                                        .noneMatch(
+                                                movDoc -> movDoc.getId().equals(mov.getId())
+                                        )
+                        ).map(movimentacao ->
+                                MovimentacaoDocument.builder()
+                                        .id(movimentacao.getId())
+                                        .tipoMovimentacao(movimentacao.getTipoMovimentacao())
+                                        .idDeposito(movimentacao.getIdDeposito())
+                                        .dataCriacao(movimentacao.getDataCriacao())
+                                        .build()
+                        ).collect(toUnmodifiableList());
+                mercadoriaDocument.getMovimentacoes().addAll(collectedDeltas);
+            }
         } else {
             mercadoriaDocument = MercadoriaDocument.builder()
                     .id(mercadoria.getId())
@@ -49,6 +56,8 @@ public final class MercadoriaService {
                     .descricao(mercadoria.getDescricao())
                     .peso(mercadoria.getPeso())
                     .medida(mercadoria.getMedida())
+                    .situacao(mercadoria.getSituacao())
+                    .idCliente(mercadoria.getIdCliente())
                     .movimentacoes(
                             mercadoria.getMovimentacoes()
                                     .stream()
@@ -63,6 +72,7 @@ public final class MercadoriaService {
                     )
                     .build();
         }
+        mercadoriaDocument.setSituacao(mercadoria.getSituacao());
         mercadoriaRepository.save(mercadoriaDocument);
 
         if (mercadoria.isEntregue()) {
